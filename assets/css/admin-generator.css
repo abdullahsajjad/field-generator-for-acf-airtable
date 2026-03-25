@@ -1,0 +1,303 @@
+/**
+ * Generator page styles.
+ *
+ * @package AFGFA
+ */
+
+/* Sections */
+.afgfa-generator-wrap .afgfa-section {
+	background: #fff;
+	border: 1px solid #ccd0d4;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+.afgfa-generator-wrap .afgfa-section h2 {
+	margin-top: 0;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+/* Table selector row */
+.afgfa-table-selector-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.afgfa-table-selector-row select {
+	min-width: 300px;
+}
+
+/* Select actions */
+.afgfa-select-actions {
+	margin-bottom: 10px;
+}
+
+/* Field preview table */
+#afgfa-fields-table .check-column {
+	width: 40px;
+	padding-left: 5px;
+}
+
+#afgfa-fields-table .column-name {
+	width: 22%;
+}
+
+#afgfa-fields-table .column-airtable-type {
+	width: 14%;
+}
+
+#afgfa-fields-table .column-suggested {
+	width: 14%;
+}
+
+#afgfa-fields-table .column-override {
+	width: 28%;
+}
+
+#afgfa-fields-table .column-preview {
+	width: 22%;
+}
+
+/* Type badges */
+.afgfa-type-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	line-height: 1.6;
+}
+
+.afgfa-type-badge.afgfa-badge-airtable {
+	background: #eef;
+	color: #336;
+	border: 1px solid #ccf;
+}
+
+.afgfa-type-badge.afgfa-badge-acf {
+	background: #efe;
+	color: #363;
+	border: 1px solid #cfc;
+}
+
+/* Override dropdown */
+.afgfa-type-override {
+	width: 100%;
+	max-width: 240px;
+}
+
+/* Field name preview */
+.afgfa-field-name-preview {
+	font-family: monospace;
+	font-size: 12px;
+	color: #666;
+}
+
+/* Generate controls */
+.afgfa-generate-field {
+	margin-bottom: 20px;
+}
+
+.afgfa-generate-field > label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 6px;
+	font-size: 13px;
+}
+
+.afgfa-group-name-input {
+	width: 100%;
+	max-width: 500px;
+}
+
+/* Location rules builder */
+.afgfa-location-rules-wrap {
+	margin-bottom: 20px;
+}
+
+.afgfa-rule-group {
+	background: #f9f9f9;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	padding: 12px;
+	margin-bottom: 10px;
+}
+
+.afgfa-rule-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 8px;
+	flex-wrap: wrap;
+}
+
+.afgfa-rule-row:last-child {
+	margin-bottom: 0;
+}
+
+.afgfa-rule-param,
+.afgfa-rule-operator,
+.afgfa-rule-value {
+	min-width: 160px;
+	max-width: 240px;
+}
+
+.afgfa-rule-operator {
+	min-width: 130px;
+	max-width: 150px;
+}
+
+.afgfa-add-rule {
+	font-size: 12px !important;
+	padding: 2px 10px !important;
+	min-height: 28px !important;
+}
+
+.afgfa-remove-rule {
+	font-size: 16px !important;
+	padding: 0 8px !important;
+	min-height: 28px !important;
+	color: #a00 !important;
+	border-color: #a00 !important;
+	line-height: 1 !important;
+}
+
+.afgfa-remove-rule:hover {
+	background: #a00 !important;
+	color: #fff !important;
+}
+
+.afgfa-or-divider {
+	text-align: center;
+	font-weight: 600;
+	color: #666;
+	text-transform: uppercase;
+	font-size: 11px;
+	letter-spacing: 1px;
+	margin-bottom: 10px;
+	padding-bottom: 0;
+}
+
+#afgfa-add-rule-group {
+	margin-top: 4px;
+	text-transform: uppercase;
+	font-size: 11px;
+	letter-spacing: 1px;
+	font-weight: 600;
+}
+
+.afgfa-generate-action {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid #eee;
+}
+
+/* Groups table */
+#afgfa-groups-table .column-title {
+	width: 25%;
+}
+
+#afgfa-groups-table .column-fields {
+	width: 10%;
+}
+
+#afgfa-groups-table .column-source {
+	width: 20%;
+}
+
+#afgfa-groups-table .column-post-type {
+	width: 12%;
+}
+
+#afgfa-groups-table .column-created {
+	width: 15%;
+}
+
+#afgfa-groups-table .column-actions {
+	width: 18%;
+}
+
+.afgfa-group-actions {
+	display: flex;
+	gap: 5px;
+}
+
+/* Progress overlay */
+.afgfa-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.afgfa-overlay-content {
+	background: #fff;
+	padding: 30px 40px;
+	border-radius: 4px;
+	width: 90%;
+	max-width: 480px;
+	text-align: center;
+}
+
+.afgfa-overlay-content h3 {
+	margin-top: 0;
+}
+
+.afgfa-progress-bar {
+	width: 100%;
+	height: 20px;
+	background: #f0f0f0;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 15px 0;
+}
+
+.afgfa-progress-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #0073aa, #00a0d2);
+	width: 0;
+	transition: width 0.3s ease;
+}
+
+.afgfa-progress-status {
+	color: #666;
+	margin: 0;
+}
+
+/* Notice styling */
+.afgfa-generator-wrap .notice {
+	margin: 15px 0;
+}
+
+.afgfa-generator-wrap .notice a {
+	font-weight: 600;
+}
+
+/* No groups row */
+.afgfa-no-groups td {
+	text-align: center;
+	color: #999;
+	padding: 20px !important;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+	.afgfa-table-selector-row,
+	.afgfa-generate-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.afgfa-table-selector-row select {
+		min-width: 100%;
+	}
+}

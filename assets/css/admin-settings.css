@@ -1,0 +1,48 @@
+/**
+ * Settings page styles.
+ *
+ * @package AFGFA
+ */
+
+.afgfa-settings-wrap .form-table th {
+	width: 200px;
+	padding-left: 0;
+}
+
+/* API key toggle */
+#afgfa-toggle-api-key {
+	margin-left: 10px;
+}
+
+#afgfa-test-connection {
+	margin-left: 10px;
+}
+
+/* Connection status inline indicator */
+#afgfa-connection-status {
+	display: inline-block;
+	margin-left: 10px;
+	font-weight: 600;
+}
+
+#afgfa-connection-status.status-success {
+	color: #46b450;
+}
+
+#afgfa-connection-status.status-error {
+	color: #dc3232;
+}
+
+#afgfa-connection-status.status-loading {
+	color: #00a0d2;
+}
+
+/* Radio buttons */
+.afgfa-settings-wrap input[type="radio"] {
+	margin-right: 8px;
+}
+
+.afgfa-settings-wrap label {
+	margin-bottom: 5px;
+	display: inline-block;
+}
