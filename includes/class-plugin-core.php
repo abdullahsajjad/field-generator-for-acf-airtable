@@ -211,17 +211,20 @@ class AFGFA_Plugin_Core {
 
 		// Generator page.
 		if ( $hook === $this->generator_hook ) {
+			// Use ACF's bundled Select2.
+			acf_enqueue_scripts();
+
 			wp_enqueue_style(
 				'afgfa-admin-generator',
 				AFGFA_PLUGIN_URL . 'assets/css/admin-generator.css',
-				array(),
+				array( 'select2' ),
 				AFGFA_VERSION
 			);
 
 			wp_enqueue_script(
 				'afgfa-admin-generator',
 				AFGFA_PLUGIN_URL . 'assets/js/admin-generator.js',
-				array( 'jquery' ),
+				array( 'jquery', 'select2' ),
 				AFGFA_VERSION,
 				true
 			);

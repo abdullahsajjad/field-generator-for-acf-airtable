@@ -76,10 +76,21 @@
 
 		populateTables: function( tables ) {
 			var $select = $( '#afgfa-table-select' );
+
+			// Destroy existing Select2 if present.
+			if ( $select.hasClass( 'select2-hidden-accessible' ) ) {
+				$select.select2( 'destroy' );
+			}
+
 			$select.empty().append( $( '<option>' ).val( '' ).text( afgfaGenerator.strings.selectTable ) );
 
 			$.each( tables, function( i, table ) {
 				$select.append( $( '<option>' ).val( table.id ).text( table.name ) );
+			} );
+
+			$select.select2( {
+				minimumResultsForSearch: tables.length > 8 ? 0 : Infinity,
+				width: '100%'
 			} );
 		},
 
@@ -88,7 +99,7 @@
 			$( '#afgfa-load-fields' ).prop( 'disabled', ! hasValue );
 
 			if ( ! hasValue ) {
-				$( '.afgfa-field-preview, .afgfa-generate-controls' ).hide();
+				$( '.afgfa-main-layout' ).hide();
 			}
 		},
 
@@ -120,7 +131,7 @@
 					if ( response.success && response.data.preview ) {
 						self.fieldData = response.data.preview;
 						self.renderFieldsTable( response.data.preview );
-						$( '.afgfa-field-preview, .afgfa-generate-controls' ).show();
+						$( '.afgfa-main-layout' ).show();
 
 						// Pre-fill group name from template with table name.
 						var currentName = $( '#afgfa-group-name' ).val();
@@ -229,6 +240,12 @@
 			} );
 
 			$( '#afgfa-select-all' ).prop( 'checked', true );
+
+			// Init Select2 on override dropdowns.
+			$( '.afgfa-type-override' ).select2( {
+				minimumResultsForSearch: 0,
+				width: '100%'
+			} );
 		},
 
 		toggleSelectAll: function() {
@@ -277,8 +294,11 @@
 
 			var $row = $( '<div>' ).addClass( 'afgfa-rule-row' );
 
-			$row.append( this.buildParamSelect( param ) );
-			$row.append( this.buildOperatorSelect( operator ) );
+			var $paramSel = this.buildParamSelect( param );
+			$row.append( $paramSel );
+
+			var $opSel = this.buildOperatorSelect( operator );
+			$row.append( $opSel );
 
 			// Value select (placeholder — will be loaded via AJAX).
 			var $valSel = $( '<select>' ).addClass( 'afgfa-rule-value' );
@@ -297,6 +317,16 @@
 					.addClass( 'button afgfa-remove-rule' )
 					.html( '&times;' )
 			);
+
+			// Init Select2 on param and operator selects.
+			$paramSel.select2( {
+				minimumResultsForSearch: Infinity,
+				width: 'resolve'
+			} );
+			$opSel.select2( {
+				minimumResultsForSearch: Infinity,
+				width: 'resolve'
+			} );
 
 			// Load values for the default param.
 			this.loadValuesForRow( $row, param, value );
@@ -337,6 +367,13 @@
 			var $row   = $( e.currentTarget ).closest( '.afgfa-rule-row' );
 			var $group = $row.closest( '.afgfa-rule-group' );
 
+			// Destroy Select2 instances in the row before removing.
+			$row.find( 'select' ).each( function() {
+				if ( $( this ).hasClass( 'select2-hidden-accessible' ) ) {
+					$( this ).select2( 'destroy' );
+				}
+			} );
+
 			$row.remove();
 
 			// If group is empty of rules, remove the group.
@@ -354,8 +391,12 @@
 		 * When the param dropdown changes, reload the value dropdown.
 		 */
 		onParamChange: function( e ) {
-			var $row  = $( e.currentTarget ).closest( '.afgfa-rule-row' );
-			var param = $( e.currentTarget ).val();
+			var $target = $( e.target );
+			var $row  = $target.closest( '.afgfa-rule-row' );
+			if ( ! $row.length ) {
+				$row = $target.closest( '.select2-container' ).parent().closest( '.afgfa-rule-row' );
+			}
+			var param = $target.val();
 			this.loadValuesForRow( $row, param );
 		},
 
@@ -370,6 +411,11 @@
 			if ( this.valueCache[ param ] ) {
 				this.populateValueSelect( $valSel, this.valueCache[ param ], preselect );
 				return;
+			}
+
+			// Destroy existing Select2 before modifying.
+			if ( $valSel.hasClass( 'select2-hidden-accessible' ) ) {
+				$valSel.select2( 'destroy' );
 			}
 
 			$valSel.empty().append( $( '<option>' ).val( '' ).text( afgfaGenerator.strings.loading ) );
@@ -400,6 +446,11 @@
 		 * Populate a value <select> from a key-value map.
 		 */
 		populateValueSelect: function( $select, values, preselect ) {
+			// Destroy existing Select2 before modifying options.
+			if ( $select.hasClass( 'select2-hidden-accessible' ) ) {
+				$select.select2( 'destroy' );
+			}
+
 			$select.empty();
 			$.each( values, function( val, label ) {
 				var $opt = $( '<option>' ).val( val ).text( label );
@@ -413,6 +464,13 @@
 			if ( ! preselect && $select.children().length > 0 ) {
 				$select.children().first().prop( 'selected', true );
 			}
+
+			// Re-init Select2.
+			var count = Object.keys( values ).length;
+			$select.select2( {
+				minimumResultsForSearch: count > 8 ? 0 : Infinity,
+				width: 'resolve'
+			} );
 		},
 
 		/**
@@ -588,18 +646,20 @@
 					var eUrl = afgfaGenerator.adminUrl + 'post.php?post=' + group.group_id + '&action=edit';
 					$actionsDiv.append(
 						$( '<a>' )
-							.addClass( 'button button-small' )
+							.addClass( 'afgfa-action-btn afgfa-action-edit' )
 							.attr( 'href', eUrl )
 							.attr( 'target', '_blank' )
-							.text( afgfaGenerator.strings.editInAcf )
+							.attr( 'title', afgfaGenerator.strings.editInAcf )
+							.html( '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' )
 					);
 				}
 
 				$actionsDiv.append(
 					$( '<button>' )
-						.addClass( 'button button-small afgfa-trash-group' )
+						.addClass( 'afgfa-action-btn afgfa-action-trash afgfa-trash-group' )
 						.attr( 'data-key', group.key )
-						.text( afgfaGenerator.strings.trashGroup )
+						.attr( 'title', afgfaGenerator.strings.trashGroup )
+						.html( '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>' )
 				);
 
 				$actions.append( $actionsDiv );
